@@ -38,6 +38,7 @@ export default {
 <style scoped>
 div{
     width: 100%;
+    margin: 2px 0;
 }
 
 input {

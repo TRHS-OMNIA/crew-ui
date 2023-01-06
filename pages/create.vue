@@ -30,7 +30,9 @@ export default {
             eventTitle: '',
             date: '',
             startTime: '',
-            endTime: ''
+            endTime: '',
+            limit: '10',
+            reserved: '4',
         }
     }
 }
@@ -43,11 +45,16 @@ export default {
     <form>
         <TextField label="Event Title" placeholder="Amazing Matchup in a Great Sport" inputmode="default" :valid="true" v-model="eventTitle"></TextField>
         <DateField label="Date" :valid="true" v-model="date"></DateField>
-        <div class="triple">
+        <div class="double">
             <TimeField label="Start Time" :valid="true" v-model="startTime"></TimeField>
             <TimeField label="End Time" :valid="true" v-model="endTime"></TimeField>
         </div>
-        
+        <div class="double">
+            <TextField label="Limit" placeholder="" inputmode="decimal" :valid="true" v-model="limit"></TextField>
+            <TextField label="Reserved" placeholder="" inputmode="decimal" :valid="true" v-model="reserved"></TextField>
+        </div>
+        <br>
+        <StandardButton type="submit">Create</StandardButton>
     </form>
 </div>
 </template>
@@ -59,7 +66,7 @@ export default {
     margin: auto;
 }
 
-.triple {
+.double {
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
