@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
+    "nuxt": "3.0.0"
+  },
+  "dependencies": {
+    "@fontsource/figtree": "^4.5.2",
+    "@fontsource/outfit": "^4.5.10",
+    "@pinia/nuxt": "^0.4.6",
+    "html5-qrcode": "^2.3.4",
+    "pinia": "^2.0.28",
+    "pinia-plugin-persistedstate": "^3.0.2",
+    "vue3-google-login": "^2.0.12"
+  }
+}

@@ -1,0 +1,18 @@
+:root {
+    --omnia-red: #8B2323;
+    --vibrant-red: #D12828;
+    --black: #000000;
+    --white: #FFFFFF;
+}
+
+html {
+    font-family: 'Outfit', sans-serif;
+}
+
+.header-icon {
+    height: 80px;
+}
+
+h1 {
+    margin: 0;
+}
