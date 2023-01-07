@@ -84,6 +84,7 @@ export default {
 
             if (res.success) {
                 // TODO redirect to admin event page
+                console.log(res.id)
             }
             else {
                 this.alertStore.alert(res.error, res.friendly)
