@@ -2,13 +2,13 @@
 import TextField from '@/components/TextField.vue';
 
 export default {
-    props: ["label", "modelValue"],
+    props: ["label", "modelValue", "valid"],
     emits: ["update:modelValue"],
     components: { TextField },
     data() {
         return {
             v: '',
-            valid: true
+            // valid: true
         }
     },
     watch: {

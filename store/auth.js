@@ -27,8 +27,8 @@ export const useAuthStore  = defineStore({
     },
     actions: {
         login(payload, token) {
+            payload.token = token
             this.$patch(payload)
-            this.token = token
         }, 
         logout() {
             this.$reset()
