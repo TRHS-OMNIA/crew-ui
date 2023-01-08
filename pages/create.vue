@@ -148,7 +148,7 @@ export default {
 <div class="content">
     <img src="@/assets/calendar-plus.svg" class="header-icon"/>
     <h1>Create Event</h1>
-    <form @submit.prevent="createHandler">
+    <form @submit.prevent="createHandler" autocomplete="off">
         <TextField label="Event Title" placeholder="Amazing Matchup in a Great Sport" inputmode="default" :valid="eventTitleValid" v-model="eventTitle"></TextField>
         <DateField label="Date" :valid="dateValid" v-model="date"></DateField>
         <div class="double">

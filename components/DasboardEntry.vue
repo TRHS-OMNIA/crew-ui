@@ -40,7 +40,8 @@ export default {
                 user_note: null
             },
             displayName: '',
-            buttonPending: false
+            buttonPending: false,
+            editing: false
         }
     },
     mounted() {
@@ -153,8 +154,10 @@ export default {
         </div>
         <div class="action-row">
             <StandardButton :disabled="checkinButtonDisabled" @clacked="ButtonHandler">{{ checkinButton }}</StandardButton>
-            <IconButton><img src="@/assets/edit-pencil.svg" /></IconButton>
+            <IconButton @clacked="editing = true"><img src="@/assets/edit-pencil.svg" /></IconButton>
         </div>
+
+        <DashboardEntryEdit :entry="e" :auth-token="authToken" :display-name="displayName" v-if="editing" @done="editing = false"></DashboardEntryEdit>
 
     </div>
 </template>

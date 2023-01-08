@@ -91,6 +91,7 @@ export default {
 <style scoped>
 .content {
     max-width: 540px;
+    margin: auto;
 }
 
 .headliner {
