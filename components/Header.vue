@@ -25,6 +25,7 @@
     font-size: 20px;
     font-weight: 500;
     padding: 15px;
+    z-index: 101;
 }
 
 .header > img {
