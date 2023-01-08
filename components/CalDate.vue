@@ -1,6 +1,18 @@
 <script>
 export default {
-    props: ['month', 'day']
+    props: {
+        month: String,
+        day: String,
+        inverted: {
+            type: Boolean,
+            default: false
+        }
+    },
+    computed: {
+        isInverted() {
+            return this.inverted
+        }
+    }
 }
 </script>
 
@@ -20,6 +32,7 @@ export default {
     box-sizing: border-box;
     font-weight: 600;
     margin: auto;
+    background-color: white;
 }
 
 .month {
@@ -32,5 +45,6 @@ export default {
 
 .day {
     font-size: 38px;
+    color: black;
 }
 </style>
