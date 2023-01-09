@@ -90,12 +90,16 @@ export default {
             if (this.e.check_in == null) {
                 this.buttonPending = true
                 const i = await this.CheckIn()
+                this.buttonPending = false
+                return
             }
             if (this.e.check_out == null) {
                 this.buttonPending = true
                 const o = await this.CheckOut()
+                this.buttonPending = false
+                return
             }
-            this.buttonPending = false
+            
         },
         async CheckIn() {
             const res = await $fetch(this.$config.public.api + '/event/' + this.e.eid + '/user/' + this.e.uid + '/checkin', {
@@ -124,6 +128,13 @@ export default {
             else {
                 this.alertStore.alert(res.error, res.friendly)
             }
+        },
+        edited(edits) {
+            this.e.check_in = edits.check_in
+            this.e.check_out = edits.check_out
+            this.e.position = edits.position
+            this.e.private_note = edits.private_note
+            this.editing = false
         }
     }
 }
@@ -157,7 +168,7 @@ export default {
             <IconButton @clacked="editing = true"><img src="@/assets/edit-pencil.svg" /></IconButton>
         </div>
 
-        <DashboardEntryEdit :entry="e" :auth-token="authToken" :display-name="displayName" v-if="editing" @done="editing = false"></DashboardEntryEdit>
+        <DashboardEntryEdit :entry="e" :auth-token="authToken" :display-name="displayName" v-if="editing" @done="editing = false" @edited="edited"></DashboardEntryEdit>
 
     </div>
 </template>

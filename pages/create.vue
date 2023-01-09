@@ -39,6 +39,7 @@ export default {
             endTimeValid: true,
             limitValid: true,
             reservedValid: true,
+            submitable: true
         }
     },
     watch: {
@@ -63,6 +64,7 @@ export default {
     },
     methods: {
         async createHandler() {
+            this.submitable = false
             let payload = {
                 eventTitle: this.eventTitle,
                 date: this.date,
@@ -83,11 +85,11 @@ export default {
             })
 
             if (res.success) {
-                // TODO redirect to admin event page
-                console.log(res.id)
+                navigateTo(`/event/${res.id}/dashboard`)
             }
             else {
                 this.alertStore.alert(res.error, res.friendly)
+                this.submitable = true
             }
         },
         createValidation() {
@@ -160,7 +162,7 @@ export default {
             <TextField label="Reserved" placeholder="" inputmode="decimal" :valid="reservedValid" v-model="reserved"></TextField>
         </div>
         <br>
-        <StandardButton type="submit">Create</StandardButton>
+        <StandardButton type="submit" :disabled="!submitable">Create</StandardButton>
     </form>
 </div>
 </template>

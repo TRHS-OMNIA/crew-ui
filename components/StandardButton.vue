@@ -12,7 +12,7 @@ export default {
             type: Boolean
         }
     },
-    emits:["clacked"]
+    emits:["clacked"],
 }
 </script>
 

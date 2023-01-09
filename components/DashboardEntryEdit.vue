@@ -1,5 +1,13 @@
 <script>
+import { useAlertStore } from '~~/store/alert'
+
 export default {
+    setup() {
+        const alertStore = useAlertStore()
+        return {
+            alertStore
+        }
+    },
     props: {
         entry: {
             default: {
@@ -22,7 +30,7 @@ export default {
         authToken: String,
         displayName: String,
     },
-    emits: ['done'],
+    emits: ['done', 'edited'],
     data() {
         return {
             e: {
@@ -46,7 +54,8 @@ export default {
             c_in: '',
             c_out: '',
             i_valid: true,
-            o_valid: true
+            o_valid: true,
+            s_disabled: false
         }
     },
     mounted() {
@@ -103,7 +112,46 @@ export default {
         },
         async updateEntry() {
             if (this.validate()) {
+                this.s_disabled = true
+                let payload = {
+                    check_in: this.c_in,
+                    check_out: this.c_out,
+                    private_note: this.e.private_note,
+                    role: this.e.position
+                }
 
+                if (this.c_in == '') {
+                    payload.check_in = null
+                }
+
+                if (this.c_out == '') {
+                    payload.check_out = null
+                }
+
+                if (this.e.private_note == '') {
+                    payload.private_note = null
+                }
+
+                if (this.e.position == '') {
+                    payload.position = null
+                }
+
+                
+
+                const res = await $fetch(this.$config.public.api + '/event/' + this.e.eid + '/user/' + this.e.uid, {
+                    method: 'POST',
+                    body: payload,
+                    headers: {
+                        authorization: this.authToken
+                    }
+                })
+                if (res.success) {
+                    this.$emit('edited', res.edits)
+                }
+                else {
+                    this.$emit('done')
+                    this.alertStore.alert(res.error, res.friendly)
+                }
             }
         }
     },
@@ -112,7 +160,7 @@ export default {
             this.i_valid = true
         },
         c_out(n, o) {
-            this.o_valid = false
+            this.o_valid = true
         }
     }
 }
@@ -124,7 +172,7 @@ export default {
             <div class="frontline">
                 <div>{{ displayName }}</div>
             </div>
-            <form autocomplete="off">
+            <form autocomplete="off" @submit.prevent="updateEntry">
                 <TextField label="Role" inputmode="default" v-model="e.position" :valid="true"></TextField>
                 <div class="quickRoles">
                     <span class="emphasis">Quick Add Roles:</span>
@@ -132,10 +180,10 @@ export default {
                 </div>
                 <TextArea label="Private Note" inputmode="default" v-model="e.private_note" :valid="true"></TextArea>
                 <div class="double">
-                    <TimeField label="Check In" v-model="c_in"></TimeField>
-                    <TimeField label="Check Out" v-model="c_out"></TimeField>
+                    <TimeField label="Check In" v-model="c_in" :valid="i_valid"></TimeField>
+                    <TimeField label="Check Out" v-model="c_out" :valid="o_valid"></TimeField>
                 </div><br>
-                <StandardButton type="submit">Update</StandardButton>
+                <StandardButton type="submit" :disabled="s_disabled">Update</StandardButton>
             </form>
         </div>
     </div>
@@ -154,6 +202,7 @@ export default {
     align-items: center;
     justify-content: center;
     z-index: 100;
+    overflow: scroll;
 }
 
 .modal {

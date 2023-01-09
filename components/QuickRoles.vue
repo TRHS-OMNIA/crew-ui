@@ -22,5 +22,6 @@ div {
     /* font-size: 12px; */
     font-weight: 500;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 </style>

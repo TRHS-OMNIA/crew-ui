@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     runtimeConfig: {
         public: {
-            api: 'http://localhost:5000',
+            api: 'https://construction-counters-allowing-fbi.trycloudflare.com',
             googleClientId: '10884935719-dt2ql5h8rr3nqfgsqg5tjpi35ktl2uvh.apps.googleusercontent.com'
         }
     },

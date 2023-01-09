@@ -31,6 +31,9 @@ export default {
     computed: {
         ...mapState(useAuthStore, ["isAdmin"]),
         ...mapState(useAlertStore, ["visible"]),
+        filled() {
+            return this.eventLimits.max - this.eventLimits.available
+        },
     },
     data() {
         return {
@@ -41,7 +44,13 @@ export default {
                 time: '#:## PM - #:## PM',
                 weekday: 'Wednesday'
             },
-            entries: []
+            entries: [],
+            eventLimits: {
+                max: 100,
+                reserved: 50,
+                available: 25,
+                reserved_available: 12
+            },
         }
     },
     methods: {
@@ -55,6 +64,7 @@ export default {
             if (res.success) {
                 Object.assign(this.eventData, res.eventData)
                 Object.assign(this.entries, res.entries)
+                Object.assign(this.eventLimits, res.eventLimits)
                 this.loader.loaded()
             }
             else {
@@ -80,7 +90,16 @@ export default {
                 </div>
             </div>
         </div>
+        <div class="content cal-date placeholder">
+                <CalDate :month="eventData.month" :day="eventData.day"></CalDate>
+                <div>
+                    <div class="title">{{ eventData.title }}</div>
+                    <div class="weekday">{{ eventData.weekday }}</div>
+                    <div class="time">{{ eventData.time }}</div>
+                </div>
+            </div>
         <div class="content">
+            <p>{{ filled }} of {{ eventLimits.max }} positions filled</p>
             <div class="entries">
                 <DasboardEntry v-for="entry in entries" :entry="entry" :auth-token="auth.token"></DasboardEntry>
             </div>
@@ -94,14 +113,26 @@ export default {
     margin: auto;
 }
 
+p {
+    text-align: center;
+    margin-top: 0px;
+}
+
 .headliner {
     background-color: black;
-    width: 100vw;
-    transform: translateX(-12px) translateY(-24px);
-    position: static;
-    padding-top: 32px;
+    /* width: 100vw; */
+    /* transform: translateX(-12px) translateY(-24px); */
+    position: fixed;
+    padding-top: 12px;
     padding-bottom: 16px;
+    left: 0px;
+    right: 0px;
+    margin-top: -24px;
     /* margin: 0 12px 12px 12px; */
+}
+
+.placeholder {
+    margin-bottom: 12px !important;
 }
 
 .cal-date {
