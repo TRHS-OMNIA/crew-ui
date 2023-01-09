@@ -27,6 +27,9 @@ export default {
                 }
             })
         }
+        else {
+            this.fetchEventData()
+        }
     },
     computed: {
         ...mapState(useAuthStore, ["isAdmin"]),
@@ -72,9 +75,6 @@ export default {
             }
         },
     },
-    mounted() {
-        this.fetchEventData()
-    }
 }
 </script>
 
