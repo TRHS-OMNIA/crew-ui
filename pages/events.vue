@@ -102,6 +102,8 @@ export default {
         margin-bottom: 12px;
         font-weight: 700;
         font-size: 20px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .option {

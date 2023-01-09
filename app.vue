@@ -19,6 +19,7 @@ import "@/assets/main.css"
 		<Link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"></Link>
 		<Meta name="msapplication-TileColor" content="#da532c"></Meta>
 		<Meta name="theme-color" content="#000000"></Meta>
+		<Title>TRHS OMNIA Crew Calendar</Title>
 	</Head>
 	<NuxtLayout>
 		<NuxtPage/>

@@ -31,6 +31,8 @@
 .header > img {
     height: 30px;
     /* padding: 15px; */
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 
 .spacer {
