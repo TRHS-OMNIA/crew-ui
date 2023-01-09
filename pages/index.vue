@@ -8,6 +8,14 @@ export default {
         return {
             auth
         }
+    },
+    mounted() {
+        if (this.auth.isLoggedIn) {
+            navigateTo('/dashboard')
+        }
+        else {
+            navigateTo('/events')
+        }
     }
 }
 </script>

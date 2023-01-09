@@ -111,6 +111,7 @@ export default {
             this.alertStore.alert("Authenticated Users Only", "Sign in to access your dashboard.");
             this.$watch("visible", (newVisibility) => {
                 if (!newVisibility) {
+                    this.loader.loaded()
                     navigateTo({ path: "/login" });
                 }
             });
