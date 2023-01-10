@@ -15,16 +15,22 @@ export default {
             type: Object
         }
     },
-    mounted() {
-        this.e = this.event;
-    },
     methods: {
-        navToEvent() {
+        navToEvent(middle=false) {
             if (this.isAdmin) {
-                navigateTo(`/event/${this.ev.id}/dashboard`)
-                return
+                if(middle) {
+                    let dest = this.$router.resolve(`/event/${this.ev.id}/dashboard`)
+                    window.open(dest.href, '_blank')
+                    return
+                }
+                return navigateTo(`/event/${this.ev.id}/dashboard`)
             }
-            navigateTo(`/event/${this.ev.id}`)
+            if(middle) {
+                    let dest = this.$router.resolve(`/event/${this.ev.id}`)
+                    window.open(dest.href, '_blank')
+                    return
+                }
+            return navigateTo(`/event/${this.ev.id}`)
         }
     },
     computed: {
@@ -34,7 +40,7 @@ export default {
 </script>
 
 <template>
-    <div class="event" @click="navToEvent">
+    <div class="event" @click="navToEvent()" @click.middle="navToEvent(true)">
         <CalDate :month="ev.month" :day="ev.day"></CalDate>
         <div>
             <div class="weekday">{{ ev.weekday }}</div>
