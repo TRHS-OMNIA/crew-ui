@@ -143,11 +143,11 @@ export default {
 <template>
     <div class="entry">
         
+        <div class="name">{{ displayName }}</div>
         <div class="tags">
             <div class="tag" v-show="courseName != null" :class="[e.class]"><span v-if="e.class != 'admin'">{{ e.period }} -</span> {{ courseName }}</div>
             <div class="tag" v-show="e.grade >= 9">{{ e.grade }}th Grade</div>
         </div>
-        <div class="name">{{ displayName }}</div>
         <div class="line-item">
             <span class="emphasis">Role: </span>
             <span v-if="e.position">{{ e.position }}</span>
@@ -174,6 +174,10 @@ export default {
 </template>
 
 <style scoped>
+
+.entry {
+    margin: 32px 0;
+}
 .action-row {
     display: grid;
     grid-template-columns: 1fr auto;

@@ -18,7 +18,6 @@ export default {
                 method: 'POST',
                 body: {token: res.credential},
             })
-            console.log(authRes)
             if (authRes.success) {
                 this.auth.login(authRes.payload, authRes.token)
             }

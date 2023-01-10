@@ -50,7 +50,7 @@ export default {
                 user_note: null
             },
             buttonPending: false,
-            roles: ['Camera Operator', 'Producer', 'Director', 'Technical Director', 'Replay', 'Graphics', 'Shader', 'Audio', 'Production Assistant'],
+            roles: ['Camera Operator', 'Producer', 'Director', 'Technical Director', 'Replay', 'Graphics', 'Shader', 'Audio', 'Announcer', 'Production Assistant', 'Shoulder Camera'],
             c_in: '',
             c_out: '',
             i_valid: true,
@@ -167,8 +167,7 @@ export default {
 </script>
 
 <template>
-    <div class="blackout" @click.self="$emit('done')">
-        <!-- <div class="head-spacer"></div> -->
+    <div>
         <div class="modal">
             <div class="frontline">
                 <div>{{ displayName }}</div>
@@ -187,32 +186,37 @@ export default {
                 <StandardButton type="submit" :disabled="s_disabled">Update</StandardButton>
             </form>
         </div>
+        <div class="blackout" @click.self="$emit('done')">
+        </div>
     </div>
+    
 </template>
 
 <style scoped>
 .blackout {
     position: fixed;
     top: 0px;
-    right: 0px;
     left: 0px;
-    bottom: 0px;
-    display: flex;
+    width: 100%;
+    height: 100%;
     background-color: rgba(1, 1, 1, 0.5);
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    overflow: scroll;
+    z-index: 101;
 }
 
 .modal {
     background-color: white;
     padding: 15px;
     border-radius: 15px;
-    width: 100%;
+    width: calc(100% - 30px);
     max-width: 540px;
-    margin: 15px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 102;
+    box-sizing: border-box;
+    max-height: calc(100% - 30px);
+    overflow: auto;
 }
 
 /* .head-spacer {
