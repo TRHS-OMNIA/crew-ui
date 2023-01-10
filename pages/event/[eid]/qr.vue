@@ -7,7 +7,7 @@ import { mapState } from 'pinia';
 export default {
     setup() {
         definePageMeta({
-        'middleware': 'loader'
+            'middleware': 'loader'
         });
         const auth = useAuthStore();
         const alertStore = useAlertStore();
@@ -31,6 +31,7 @@ export default {
         }
         else {
             this.fetchData()
+            this.fetchQR()
         }
     },
     data() {
@@ -72,6 +73,20 @@ export default {
             else {
                 this.alertStore.alert(res.error, res.friendly)
             }
+        },
+        async fetchQR() {
+            const res = await $fetch(this.$config.public.api + '/event/' + this.$route.params.eid + '/qr', {
+                method: 'GET',
+                headers: {
+                    authorization: this.auth.token
+                }
+            })
+            if (res.success) {
+                this.qr = res.qrid
+            }
+            else {
+                this.alertStore.alert(res.error, res.friendly)
+            }
         }
     }
 }
@@ -82,7 +97,7 @@ export default {
     <div class="content">
         <br><br>
         <div class="qr">
-            <QRender :qdata="qr"></QRender>
+            <QRender :qdata="qr" v-if="qr != ''"></QRender>
         </div>
         <div class="bottom">
             <QREventInfo :display-name="auth.display_name" :ev="eventData"></QREventInfo>
@@ -99,6 +114,11 @@ export default {
     background-color: white;
     border-radius: 15px;
     padding: 15px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .bottom {
