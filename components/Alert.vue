@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 .blackout {
-    position: absolute;
+    position: fixed;
     top: 0px;
     right: 0px;
     left: 0px;

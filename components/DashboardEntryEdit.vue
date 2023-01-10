@@ -168,6 +168,7 @@ export default {
 
 <template>
     <div class="blackout" @click.self="$emit('done')">
+        <!-- <div class="head-spacer"></div> -->
         <div class="modal">
             <div class="frontline">
                 <div>{{ displayName }}</div>
@@ -191,7 +192,7 @@ export default {
 
 <style scoped>
 .blackout {
-    position: absolute;
+    position: fixed;
     top: 0px;
     right: 0px;
     left: 0px;
@@ -213,6 +214,11 @@ export default {
     max-width: 540px;
     margin: 15px;
 }
+
+/* .head-spacer {
+    height: 55px;
+    width: 100%;
+} */
 
 .double {
     display: grid;
