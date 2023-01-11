@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <img src="@/assets/white-logo.png" @click="navigateTo('/')"/>
-        <div>Crew Calendar</div>
+        <div @click="navigateTo('/')">Crew Calendar</div>
         <div>
             <slot />
         </div>

@@ -41,7 +41,8 @@ export default {
             },
             displayName: '',
             buttonPending: false,
-            editing: false
+            editing: false,
+            vis: true
         }
     },
     mounted() {
@@ -135,13 +136,17 @@ export default {
             this.e.position = edits.position
             this.e.private_note = edits.private_note
             this.editing = false
+        },
+        removed() {
+            this.editing = false
+            this.vis = false
         }
     }
 }
 </script>
 
 <template>
-    <div class="entry">
+    <div class="entry" v-if="vis">
         
         <div class="name">{{ displayName }}</div>
         <div class="tags">
@@ -168,7 +173,7 @@ export default {
             <IconButton @clacked="editing = true"><img src="@/assets/edit-pencil.svg" /></IconButton>
         </div>
 
-        <DashboardEntryEdit :entry="e" :auth-token="authToken" :display-name="displayName" v-if="editing" @done="editing = false" @edited="edited"></DashboardEntryEdit>
+        <DashboardEntryEdit :entry="e" :auth-token="authToken" :display-name="displayName" v-if="editing" @done="editing = false" @edited="edited" @removed="removed"></DashboardEntryEdit>
 
     </div>
 </template>

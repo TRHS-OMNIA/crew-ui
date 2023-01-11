@@ -106,7 +106,7 @@ export default {
 
         </div>
         <div class="bottom">
-            <DasboardEntry :auth-token="token" :entry="scanData" v-if="scanViz"></DasboardEntry>
+            <DasboardEntry :auth-token="token" :entry="scanData" v-if="scanViz" @removed="clearScan"></DasboardEntry>
             <br>
             <StandardButton @clacked="clearScan">Clear Scanner</StandardButton>
         </div>
@@ -130,7 +130,7 @@ export default {
 }
 
 .bottom {
-    margin-top: 80px;
+    margin-top: 15px;
     background-color: white;
     padding: 15px;
     border-radius: 15px;

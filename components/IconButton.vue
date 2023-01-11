@@ -10,6 +10,10 @@ export default {
         disabled: {
             default: false,
             type: Boolean
+        },
+        danger: {
+            default: false,
+            type: Boolean
         }
     },
     emits:["clacked"]
@@ -17,7 +21,7 @@ export default {
 </script>
 
 <template>
-    <button :class="{'left': left, 'right': right}" :type="type" @click="$emit('clacked')" :disabled="disabled">
+    <button :class="{'left': left, 'right': right, 'danger': danger}" :type="type" @click="$emit('clacked')" :disabled="disabled">
         <slot></slot>
     </button>
 </template>
@@ -57,5 +61,16 @@ button.right {
 
 button.left{
     float: left;
+}
+
+button.danger {
+    background-color: var(--vibrant-red);
+}
+
+button:disabled.danger {
+    background-color: grey;
+}
+button.danger > ::v-deep(img) {
+    filter: invert(1);
 }
 </style>

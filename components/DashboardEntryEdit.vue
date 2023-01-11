@@ -30,7 +30,7 @@ export default {
         authToken: String,
         displayName: String,
     },
-    emits: ['done', 'edited'],
+    emits: ['done', 'edited', 'removed'],
     data() {
         return {
             e: {
@@ -50,6 +50,7 @@ export default {
                 user_note: null
             },
             buttonPending: false,
+            removeButtonPending: false,
             roles: ['Camera Operator', 'Producer', 'Director', 'Technical Director', 'Replay', 'Graphics', 'Shader', 'Audio', 'Announcer', 'Production Assistant', 'Shoulder Camera'],
             c_in: '',
             c_out: '',
@@ -153,6 +154,22 @@ export default {
                     this.alertStore.alert(res.error, res.friendly)
                 }
             }
+        },
+        async removeEntry() {
+            this.removeButtonPending = true
+            const res = await $fetch(this.$config.public.api + '/event/' + this.e.eid + '/user/' + this.e.uid + '/remove', {
+                method: 'GET',
+                headers: {
+                    authorization: this.authToken
+                }
+            })
+            if (res.success) {
+                this.$emit('removed')
+            }
+            else {
+                this.$emit('done')
+                this.alertStore.alert(res.error, res.friendly)
+            }
         }
     },
     watch: {
@@ -171,6 +188,7 @@ export default {
         <div class="modal">
             <div class="frontline">
                 <div>{{ displayName }}</div>
+                <IconButton @clacked="removeEntry" :disabled="removeButtonPending" danger><img src="@/assets/trash.svg" /></IconButton>
             </div>
             <form autocomplete="off" @submit.prevent="updateEntry">
                 <TextField label="Role" inputmode="default" v-model="e.position" :valid="true"></TextField>
@@ -234,6 +252,10 @@ export default {
     font-size: 20px;
     font-weight: 600;
     border-bottom: 2px solid black;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding-bottom: 6px;
 }
 
 span.emphasis {

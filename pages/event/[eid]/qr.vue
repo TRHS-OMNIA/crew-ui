@@ -122,7 +122,7 @@ export default {
 }
 
 .bottom {
-    margin-top: 80px;
+    margin-top: 15px;
 }
 
 .content {
