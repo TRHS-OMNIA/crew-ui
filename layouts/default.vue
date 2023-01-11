@@ -5,7 +5,7 @@
 <template>
     <div>
         <Header>
-            <slot name="nav"></slot>
+            <div id="nav-bar-slot"></div>
         </Header>
         <Alert></Alert>
         <Loading></Loading>

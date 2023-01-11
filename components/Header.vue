@@ -2,9 +2,7 @@
     <div class="header">
         <img src="@/assets/white-logo.png" @click="navigateTo('/')"/>
         <div @click="navigateTo('/')">Crew Calendar</div>
-        <div>
-            <slot />
-        </div>
+        <slot />
     </div>
     <div class="spacer"></div>
 </template>
@@ -26,6 +24,7 @@
     font-weight: 500;
     padding: 15px;
     z-index: 101;
+    height: 47px;
 }
 
 .header > img {
@@ -36,7 +35,7 @@
 }
 
 .spacer {
-    margin-bottom: 70px;
+    margin-bottom: 95px;
 }
 
 </style>

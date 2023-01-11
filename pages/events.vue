@@ -1,6 +1,8 @@
 <script>
 import { useAlertStore } from '~~/store/alert';
 import { useLoaderStore } from '~~/store/loader';
+import { useAuthStore } from '~~/store/auth';
+import { mapState } from 'pinia';
 
 export default {
     setup() {
@@ -56,6 +58,9 @@ export default {
     },
     mounted() {
         this.getEventData()
+    },
+    computed: {
+        ...mapState(useAuthStore, ["isAdmin"])
     }
 }
 </script>
@@ -71,6 +76,11 @@ export default {
         <EventsList :events="u" v-if="upcoming"></EventsList>
         <EventsList :events="p" v-else></EventsList>
     </div>
+    <ClientOnly>
+        <Teleport to="#nav-bar-slot">
+            <IconButton white @clacked="navigateTo('/create')" v-if="isAdmin"><img src="@/assets/plus.svg" /></IconButton>
+        </Teleport>
+    </ClientOnly>
 </template>
 
 <style scoped>
@@ -80,7 +90,7 @@ export default {
         margin: auto;
     }
 
-    img {
+    div.center > img {
         height: 55px;
         margin: auto;
     }

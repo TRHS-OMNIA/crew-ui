@@ -105,7 +105,14 @@ export default {
             </div>
         </div>
     </div>
+    <ClientOnly>
+        <Teleport to="#nav-bar-slot">
+            <IconButton white @clacked="navigateTo('/scan')"><img src="@/assets/scan-qr-code.svg" /></IconButton>
+        </Teleport>
+    </ClientOnly>
 </template>
+
+
 
 <style scoped>
 .content {
