@@ -29,7 +29,6 @@ export default {
         <div>
             <img src="@/assets/user.svg" class="section-header"/>
         </div>
-        <!-- <span>Login</span> -->
         <Auth></Auth>
     </div>
     
