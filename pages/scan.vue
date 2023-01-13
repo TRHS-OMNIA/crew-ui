@@ -69,6 +69,7 @@ export default {
     },
     beforeUnmount() {
         document.querySelector('body').style.backgroundColor='#fff'
+        this.scanner.stop()
     },
     methods: {
         async scanned(scannedText) {
