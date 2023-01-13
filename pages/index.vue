@@ -33,6 +33,7 @@ export default {
 
 <template>
     <div class="container">
+        <img class="logo" src="@/assets/tower-light.svg" />
         <IconBar>
             <img src="@/assets/user.svg" class="section-header"/>
         </IconBar>
@@ -54,5 +55,10 @@ export default {
     margin: auto;
     text-align: center;
     margin-top: 10vh;
+}
+
+img.logo {
+    max-height: 150px;
+    width: 100%;
 }
 </style>

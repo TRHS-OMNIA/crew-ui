@@ -1,7 +1,26 @@
+<script>
+import { useAuthStore } from '~~/store/auth';
+import { mapState } from 'pinia';
+
+export default {
+    computed: {
+        ...mapState(useAuthStore, ["isLoggedIn"])
+    },
+    methods: {
+        goHome() {
+            if (this.isLoggedIn) {
+                return navigateTo('/dashboard')
+            }
+            return navigateTo('/')
+        }
+    }
+}
+</script>
+
 <template>
     <div class="header">
-        <img src="@/assets/white-logo.png" @click="navigateTo('/')"/>
-        <div @click="navigateTo('/')">Crew Calendar</div>
+        <img src="@/assets/white-logo.png" @click="goHome"/>
+        <div @click="goHome">Crew Calendar</div>
         <slot />
     </div>
     <div class="spacer"></div>

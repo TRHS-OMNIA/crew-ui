@@ -38,7 +38,17 @@ export default {
                     id: 'id'
                 }
             ],
-            upcoming: true,
+            t: [
+                {
+                    title: 'Event Title',
+                    month: 'MON',
+                    day: '##',
+                    time: '#:## PM - #:## PM',
+                    weekday: 'Wednesday',
+                    id: 'id'
+                }
+            ],
+            selected: 'upcoming'
         }
     },
     methods: {
@@ -49,11 +59,18 @@ export default {
             if (res.success) {
                 this.u = Object.assign({}, res.upcoming)
                 this.p = Object.assign({}, res.previous)
+                this.t = Object.assign({}, res.today)
+                if (res.today.length > 0) {
+                    this.selected = 'today'
+                }
                 this.loader.loaded()
             }
             else {
                 this.alertStore.alert(res.error, res.friendly)
             }
+        }, 
+        changeOption(newOption) {
+            this.selected = newOption
         }
     },
     mounted() {
@@ -69,12 +86,14 @@ export default {
     <div class="content">
         <div class="center"><img src="@/assets/calendar.svg" /></div>
         <h1>Events</h1>
-        <div class="double">
-            <div :class="{option: upcoming}" @click="upcoming = true">Upcoming</div>
-            <div :class="{option: !upcoming}" @click="upcoming = false">Previous</div>
+        <div class="triple">
+            <div :class="{option: selected == 'today'}" @click="changeOption('today')">Today</div>
+            <div :class="{option: selected == 'upcoming'}" @click="changeOption('upcoming')">Upcoming</div>
+            <div :class="{option: selected == 'prev'}" @click="changeOption('prev')">Previous</div>
         </div>
-        <EventsList :events="u" v-if="upcoming"></EventsList>
-        <EventsList :events="p" v-else></EventsList>
+        <EventsList :events="u" empty="There aren't currently any upcoming events, check back often as events are regulary added." v-if="selected == 'upcoming'"></EventsList>
+        <EventsList :events="p" empty="There haven't been any events." v-else-if="selected == 'prev'"></EventsList>
+        <EventsList :events="t" empty="There aren't any events today." v-else-if="selected == 'today'"></EventsList>
     </div>
     <ClientOnly>
         <Teleport to="#nav-bar-slot">
@@ -104,9 +123,9 @@ export default {
         text-align: center;
         margin-bottom: 14px;
     }
-    .double {
+    .triple {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         width: 100%;
         text-align: center;
         margin-bottom: 12px;
