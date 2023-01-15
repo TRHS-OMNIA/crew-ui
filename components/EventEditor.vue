@@ -172,6 +172,7 @@ export default {
                     this.submitable = true
                 }
             }
+            this.submitable = true
         },
         async edit() {
             this.submitable = false
