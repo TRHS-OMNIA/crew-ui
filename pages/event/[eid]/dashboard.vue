@@ -107,6 +107,7 @@ export default {
     </div>
     <ClientOnly>
         <Teleport to="#nav-bar-slot">
+            <IconButton white @clacked="navigateTo(`/event/${this.$route.params.eid}/edit`)"><img src="@/assets/edit-pencil.svg" /></IconButton>
             <IconButton white @clacked="navigateTo('/scan')"><img src="@/assets/scan-qr-code.svg" /></IconButton>
         </Teleport>
     </ClientOnly>

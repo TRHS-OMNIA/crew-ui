@@ -34,3 +34,8 @@ h2 {
 div {
     user-select: none;
 }
+
+#nav-bar-slot {
+    display: flex;
+    gap: 8px;
+}
