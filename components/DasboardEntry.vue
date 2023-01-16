@@ -19,8 +19,10 @@ export default {
                 user_note: null
             }
         },
-        authToken: String
+        authToken: String,
+        index: Number
     },
+    emits: ['edited'],
     data() {
         return {
             e: {
@@ -136,6 +138,7 @@ export default {
             this.e.position = edits.position
             this.e.private_note = edits.private_note
             this.editing = false
+            this.$emit('edited', this.index, this.e)
         },
         removed() {
             this.editing = false

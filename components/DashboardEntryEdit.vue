@@ -51,7 +51,7 @@ export default {
             },
             buttonPending: false,
             removeButtonPending: false,
-            roles: ['Camera Operator', 'Producer', 'Director', 'Technical Director', 'Replay', 'Graphics', 'Shader', 'Audio', 'Announcer', 'Production Assistant', 'Shoulder Camera'],
+            roles: this.$config.public.roles,
             c_in: '',
             c_out: '',
             i_valid: true,

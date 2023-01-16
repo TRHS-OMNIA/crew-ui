@@ -37,6 +37,23 @@ export default {
         filled() {
             return this.eventLimits.max - this.eventLimits.available
         },
+        roles() {
+            let combinedRoles = ''
+            for (const entry of this.entries) {
+                if (entry.position) {
+                    combinedRoles += `/${entry.position}/`
+                }
+            }
+            let tags = []
+            for (const role of this.$config.public.roles) {
+                const regex = new RegExp(`/${role}/`, 'g')
+                const count = (combinedRoles.match(regex) || []).length
+                if (count > 0) {
+                    tags.push(`${count} ${role}`)
+                }
+            }
+            return tags
+        }
     },
     data() {
         return {
@@ -74,6 +91,9 @@ export default {
                 this.alertStore.alert(res.error, res.friendly)
             }
         },
+        edited(index, editedEntry) {
+            this.entries[index] = editedEntry
+        }
     },
 }
 </script>
@@ -100,8 +120,9 @@ export default {
             </div>
         <div class="content">
             <p>{{ filled }} of {{ eventLimits.max }} positions filled</p>
+            <div class="tags"><div class="tag" v-for="r in roles">{{ r }}</div></div>
             <div class="entries">
-                <DasboardEntry v-for="entry in entries" :entry="entry" :auth-token="auth.token"></DasboardEntry>
+                <DasboardEntry v-for="(entry, i) in entries" :entry="entry" :auth-token="auth.token" :index="i" @edited="edited"></DasboardEntry>
             </div>
         </div>
     </div>
@@ -153,10 +174,6 @@ p {
     gap: 12px;
 }
 
-.weekday {
-    /* font-style: italic; */
-}
-
 .time {
     font-size: 20px;
 }
@@ -170,4 +187,22 @@ p {
     margin-top: 6px;
 }
 
+.tag {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    gap: 4px;
+}
 </style>
