@@ -34,7 +34,17 @@ export default {
         else {
             this.scanner = new Html5Qrcode("qr-scan-preview")
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                this.scanned(decodedText)
+                if (!this.scanHistroy.includes(decodedText)) {
+                    this.scanHistroy.push(decodedText)
+                    // this.scanner.pause()
+                    this.pulse = true
+                    setTimeout(() => {
+                        this.pulse = false
+                        // this.scanner.resume()
+                    }, 1000)
+                    this.scanned(decodedText)
+                    window.navigator.vibrate(200)
+                }
             };
             const config = { fps: 10,  videoConstraints: {aspectRatio: 1, facingMode: "environment"}}
             this.scanner.start({ facingMode: "environment" }, config, qrCodeSuccessCallback).then( () => {
@@ -61,6 +71,8 @@ export default {
                 action: ''
             },
             scanViz: false,
+            pulse: false,
+            scanHistroy: []
         }
     },
     computed: {
@@ -73,8 +85,7 @@ export default {
     },
     methods: {
         async scanned(scannedText) {
-            console.log(scannedText)
-            this.scanner.pause()
+            // this.scanner.pause()
             const res = await $fetch(this.$config.public.api + '/scan/qr/' + scannedText, {
                 method: 'GET',
                 headers: {
@@ -85,7 +96,7 @@ export default {
                 console.log(res)
                 this.scanData = Object.assign({}, res.data)
                 this.scanViz = true
-                setTimeout(() => {this.scanner.resume()}, 5000) 
+                // setTimeout(() => {this.scanner.resume()}, 5000) 
             }
             else {
                 this.alertStore.alert(res.error, res.friendly)
@@ -102,20 +113,32 @@ export default {
 
 <template>
     <div class="content">
-        <br><br>
-        <div class="qr" id="qr-scan-preview">
+        <div class="qr" id="qr-scan-preview" :class="{'pulse': pulse}">
 
         </div>
-        <div class="bottom">
-            <DasboardEntry :auth-token="token" :entry="scanData" v-if="scanViz" @removed="clearScan"></DasboardEntry>
-            <br>
-            <StandardButton @clacked="clearScan">Clear Scanner</StandardButton>
+        <div class="bottom" v-if="scanViz">
+            <div class="float-contain"><div class="float-btn"><IconButton white @clacked="clearScan"><img src="@/assets/cancel.svg" /></IconButton></div></div>
+            <DasboardEntry :auth-token="token" :entry="scanData" @removed="clearScan"></DasboardEntry>
+            <!-- <br>
+            <StandardButton @clacked="clearScan">Clear Scanner</StandardButton> -->
         </div>
     </div>
     
 </template>
 
 <style scoped>
+.float-btn{
+    position: absolute;
+    bottom: 24px;
+    height: 47px;
+    width: 47px;
+    right: -12px;
+}
+
+.float-contain {
+    position: relative;
+    float: right;
+}
 .qr {
     max-width: 450px;
     width: 75%;
@@ -135,6 +158,11 @@ export default {
     background-color: white;
     padding: 15px;
     border-radius: 15px;
+    position: fixed;
+    bottom: 12px;
+    box-sizing: border-box;
+    width: calc(100% - 24px);
+    max-width: 540px;
 }
 
 .entry {
@@ -145,6 +173,10 @@ export default {
     width: 100%;
     max-width: 540px;
     margin: auto;
+}
+
+.pulse {
+    animation: scanPulse 1s;
 }
 
 </style>
@@ -161,5 +193,22 @@ export default {
 
 #qr-pause-crap {
     display: none !important;
+}
+
+@keyframes scanPulse {
+    0%,
+    100% {
+        box-shadow: 0px 0px 0px 0px var(--vibrant-green);
+        -moz-box-shadow: 0px 0px 0px 0px var(--vibrant-green);
+        -webkit-box-shadow: 0px 0px 0px 0px var(--vibrant-green);
+        background-color: white;
+    }
+
+    50% {
+        box-shadow: 0px 0px 60px 0px var(--vibrant-green);
+        -moz-box-shadow: 0px 0px 60px 0px var(--vibrant-green);
+        -webkit-box-shadow: 0px 0px 60px 0px var(--vibrant-green);
+        background-color: var(--vibrant-green);
+    }
 }
 </style>
