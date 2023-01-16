@@ -10,6 +10,10 @@ export default {
         disabled: {
             default: false,
             type: Boolean
+        },
+        green: {
+            type: Boolean,
+            default: false
         }
     },
     emits:["clacked"],
@@ -17,7 +21,7 @@ export default {
 </script>
 
 <template>
-    <button :class="{'left': left, 'right': right}" :type="type" @click="$emit('clacked')" :disabled="disabled">
+    <button :class="{'left': left, 'right': right, 'green': green}" :type="type" @click="$emit('clacked')" :disabled="disabled">
         <slot></slot>
     </button>
 </template>
@@ -35,6 +39,11 @@ button {
     width: 100%;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+}
+
+button.green {
+    border-color: var(--less-vibrant-green);
+    background-color: var(--less-vibrant-green);
 }
 
 button:disabled {

@@ -172,7 +172,7 @@ export default {
             <span v-else class="blank">Not checked in</span>
         </div>
         <div class="action-row">
-            <StandardButton :disabled="checkinButtonDisabled" @clacked="ButtonHandler">{{ checkinButton }}</StandardButton>
+            <StandardButton :disabled="checkinButtonDisabled" @clacked="ButtonHandler" :green="checkinButton == 'Check Out'">{{ checkinButton }}</StandardButton>
             <IconButton @clacked="editing = true"><img src="@/assets/edit-pencil.svg" /></IconButton>
         </div>
 
