@@ -124,6 +124,7 @@ export default {
             <div class="entries">
                 <DasboardEntry v-for="(entry, i) in entries" :entry="entry" :auth-token="auth.token" :index="i" @edited="edited"></DasboardEntry>
             </div>
+            <OutlineButton @clacked="navigateTo(`/event/${this.$route.params.eid}/add`)">Add User to Event</OutlineButton>
         </div>
     </div>
     <ClientOnly>

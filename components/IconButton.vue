@@ -53,6 +53,10 @@ button:disabled {
     cursor: not-allowed;
 }
 
+button:disabled > ::v-deep(img) {
+    filter: invert(1);
+}
+
 ::v-deep(img) {
     aspect-ratio: 1 / 1;
     height: 33px;

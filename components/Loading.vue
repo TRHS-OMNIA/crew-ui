@@ -23,7 +23,7 @@ export default {
 <style scoped>
 .takeover {
     z-index: 99;
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;
@@ -35,8 +35,8 @@ export default {
 }
 
 video {
-    max-width: 512px;
-    max-height: 512px;
+    max-width: 128px;
+    max-height: 128px;
     width: 30%;
     aspect-ratio: 1 / 1;
     margin: auto;
