@@ -6,6 +6,10 @@ export default {
         inverted: {
             type: Boolean,
             default: false
+        },
+        red: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -17,8 +21,8 @@ export default {
 </script>
 
 <template>
-    <div class="caldate">
-        <div class="month">{{ month }}</div>
+    <div class="caldate" :class="{red: red}">
+        <div class="month" :class="{red: red}">{{ month }}</div>
         <div class="day">{{ day }}</div>
     </div>
 </template>
@@ -46,5 +50,13 @@ export default {
 .day {
     font-size: 38px;
     color: black;
+}
+
+.month.red {
+    background-color: var(--vibrant-red);
+}
+
+.caldate.red {
+    border-color: var(--vibrant-red);
 }
 </style>

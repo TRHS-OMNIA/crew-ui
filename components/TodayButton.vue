@@ -27,25 +27,43 @@ export default {
     },
     methods: {
         navToEvent() {
-            navigateTo(`/event/${this.ev.event_id}/qr`)
+            if (!this.checkedOut){navigateTo(`/event/${this.ev.event_id}/qr`)}
         }
     },
     computed: {
         countdownString() {
             return countdown(this.ev.start, this.now)
+        },
+        checkinout() {
+            if (this.ev.check_in == null) {
+                return ''
+            }
+            if (this.ev.check_out == null) {
+                return prettyTime(this.ev.check_in)
+            }
+            return `${prettyTime(this.ev.check_in)} - ${prettyTime(this.ev.check_out)}`
+        },
+        checkedIn() {
+            return this.ev.check_in != null
+        },
+        checkedOut() {
+            return this.ev.check_out != null
         }
     },
 }
 </script>
 
 <template>
-    <div class="event" @click="navToEvent">
-        <div class="counter" v-if="countdownString">Starts in {{ countdownString }}</div>
+    <div class="event-btn" @click="navToEvent" :class="{green: checkedIn && !checkedOut, out: checkedOut}">
+        <div class="counter" v-if="checkedOut">Completed</div>
+        <div class="counter" v-else-if="checkedIn">Checked in @ {{ checkinout }}</div>
+        <div class="counter" v-else-if="countdownString">Starts in {{ countdownString }}</div>
         <div class="counter" v-else>Event Started</div>
         <CalDate :month="ev.month" :day="ev.day"></CalDate>
         <div>
             <div class="title">{{ ev.title }}</div>
-            <div class="time">{{ ev.time }}</div>
+            <div class="time" v-if="!checkedOut">{{ ev.time }}</div>
+            <div class="time" v-else>{{ checkinout }}</div>
             <div class="weekday">
                 <span class="emphasis">Role: </span>
                 <span v-if="ev.position != null">{{ ev.position }}</span>
@@ -53,13 +71,14 @@ export default {
             </div>
         </div>
         <div class="buuttons">
-            <img src="@/assets/qr.svg" />
+            <img src="@/assets/qr.svg" v-if="!checkedOut"/>
+            <img src="@/assets/check.svg" v-else/>
         </div>
     </div>
 </template>
 
 <style scoped>
-.event {
+.event-btn {
     width: 100%;
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -73,6 +92,14 @@ export default {
     margin-bottom: 8px;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+}
+
+.event-btn.green {
+    background-color: var(--less-vibrant-green);
+}
+
+.event-btn.out {
+    background-color: grey;
 }
 
 .counter {
@@ -97,6 +124,9 @@ export default {
     border-color: white;
 }
 
+.out > .caldate, .green > .caldate {
+    border-color: var(--vibrant-blue);
+}
 
 .time {
     font-size: 16px;

@@ -15,18 +15,46 @@ export default {
                 weekday: "Weekday"
             },
             type: Object
+        },
+        previous: {
+            type: Boolean,
+            default: false
         }
     },
+    computed: {
+        isNoShow() {
+            return (this.ev.check_in == null && this.previous)
+        },
+        isStillCheckedIn() {
+            return (this.ev.check_in != null && this.ev.check_out == null && this.previous)
+        },
+        checkinout() {
+            if (this.ev.check_in == null) {
+                return ''
+            }
+            if (this.ev.check_out == null) {
+                return prettyTime(this.ev.check_in)
+            }
+            return `${prettyTime(this.ev.check_in)} - ${prettyTime(this.ev.check_out)}`
+        }
+    }
 }
 </script>
 
 <template>
     <div class="event">
-        <CalDate :month="ev.month" :day="ev.day"></CalDate>
+        <CalDate :month="ev.month" :day="ev.day" :red="isNoShow || isStillCheckedIn"></CalDate>
         <div>
             <div class="weekday">{{ ev.weekday }}</div>
             <div class="title">{{ ev.title }}</div>
-            <div class="time">{{ ev.time }}</div>
+            <div class="time" v-if="!previous">{{ ev.time }}</div>
+            <div class="time" v-else-if="isNoShow">
+                <span class="alert">No Show</span>
+            </div>
+            <div class="time" v-else-if="isStillCheckedIn">
+                <span class="alert">Never Checked Out</span>
+            </div>
+            <div class="time" v-else>{{ checkinout }}</div>
         </div>
     </div>
 </template>
@@ -78,5 +106,11 @@ img {
     height: 45px;
     margin: auto;
     filter: invert(1);
+}
+
+span.alert {
+    color: var(--vibrant-red);
+    font-weight: 900;
+    font-size: 16px;
 }
 </style>
