@@ -144,7 +144,7 @@ export default {
 
         <div class="divide" v-if="previous.length > 0">
             <h2>Completed Events</h2>
-            <DashboardEvent v-for="ev in previous" :ev="ev"></DashboardEvent>
+            <DashboardEvent v-for="ev in previous" :ev="ev" previous></DashboardEvent>
         </div>
     </div>
 </template>

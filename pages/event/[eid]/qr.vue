@@ -36,19 +36,30 @@ export default {
     },
     data() {
         return {
-            qr: 'crew',
+            qr: '',
             eventData: {
-                    check_in: null,
-                    check_out: null,
-                    day: "##",
-                    event_id: "",
-                    month: "MON",
-                    position: null,
-                    start: "Sun, 09 Jan 2023 18:00:00 GMT",
-                    time: "#:## AM - #:## PM",
-                    title: "Event Title",
-                    weekday: "Weekday"
-                }
+                check_in: null,
+                check_out: null,
+                day: "##",
+                event_id: "",
+                month: "MON",
+                position: null,
+                start: "Sun, 09 Jan 2023 18:00:00 GMT",
+                time: "#:## AM - #:## PM",
+                title: "Event Title",
+                weekday: "Weekday"
+            },
+            scanned: false,
+            qrTimeout: undefined,
+            scanTimeout: undefined
+        }
+    },
+    watch: {
+        scanned(n, o) {
+            if (n) {
+                setTimeout(() => {navigateTo('/dashboard')}, 10 * 1000)
+                window.navigator.vibrate(200)
+            }
         }
     },
     computed: {
@@ -57,6 +68,8 @@ export default {
     },
     beforeUnmount() {
         document.querySelector('body').style.backgroundColor='#fff'
+        clearTimeout(this.qrTimeout)
+        clearTimeout(this.scanTimeout)
     },
     methods: {
         async fetchData() {
@@ -82,10 +95,37 @@ export default {
                 }
             })
             if (res.success) {
+                clearTimeout(this.scanTimeout)
+                if (this.qr != '') {this.checkScan()}
+                
                 this.qr = res.qrid
+                if (document.visibilityState) {
+                    this.qrTimeout= setTimeout(() => {this.fetchQR()}, 145 * 1000)
+                    this.scanTimeout = setTimeout(() => {this.checkScan()}, 5 * 1000)
+                }
             }
             else {
                 this.alertStore.alert(res.error, res.friendly)
+            }
+        },
+        async checkScan() {
+            clearTimeout(this.scanTimeout)
+            const res = await $fetch(this.$config.public.api + '/qr/' + this.qr, {
+                method: 'GET',
+                headers: {
+                    authorization: this.auth.token
+                }
+            })
+            if (res.success) {
+                if (res.scanned) {
+                    this.scanned = true
+                    clearTimeout(this.qrTimeout)
+                    clearTimeout(this.scanTimeout)
+                }
+                else {
+                    clearTimeout(this.scanTimeout)
+                    if (document.visibilityState) {this.scanTimeout = setTimeout(() => {this.checkScan()}, 5 * 1000)}
+                }
             }
         }
     }
@@ -95,9 +135,9 @@ export default {
 
 <template>
     <div class="content">
-        <br><br>
-        <div class="qr">
-            <QRender :qdata="qr" v-if="qr != ''"></QRender>
+        <div class="qr" :class="{green: scanned}">
+            <QRender :qdata="qr" v-if="qr != '' && !scanned"></QRender>
+            <img class="invert" src="@/assets/check.svg" v-else-if="scanned"/>
         </div>
         <div class="bottom">
             <QREventInfo :display-name="auth.display_name" :ev="eventData"></QREventInfo>
@@ -107,7 +147,7 @@ export default {
 </template>
 
 <style scoped>
-.qr {
+div.qr {
     max-width: 450px;
     width: 75%;
     margin: auto;
@@ -118,7 +158,15 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 1s;
+}
 
+.qr.green {
+    background-color: var(--vibrant-green);
+}
+
+img.invert {
+    filter: invert(1);
 }
 
 .bottom {
