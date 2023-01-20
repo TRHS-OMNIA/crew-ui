@@ -56,6 +56,20 @@ export default {
             this.displayName = `${this.e.first_name} ${this.e.last_name}`
         }
     },
+    watch: {
+        e: {
+            handler(n, o) {
+                this.e = n
+                if (this.e.nickname) {
+                    this.displayName = `${this.e.nickname} ${this.e.last_name}`
+                }
+                else {
+                    this.displayName = `${this.e.first_name} ${this.e.last_name}`
+                }
+            },
+            deep: true
+        }
+    },
     computed: {
         courseName() {
             if (this.e.class == 'media') { return 'Media Concepts'}
