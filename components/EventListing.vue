@@ -34,16 +34,29 @@ export default {
         }
     },
     computed: {
-        ...mapState(useAuthStore, ['isAdmin'])
+        ...mapState(useAuthStore, ['isAdmin']),
+        limitsAvailable() {
+            return this.ev.eventLimits != undefined
+        },
+        userCantJoin() {
+            if (! this.isAdmin) {
+                return this.limitsAvailable && ! this.ev.userEventLimits.user_available
+            }
+            return this.limitsAvailable && this.ev.eventLimits.available == 0
+        }
     },
 }
 </script>
 
 <template>
-    <div class="event" @click="navToEvent()" @click.middle="navToEvent(true)">
+    <div class="event" :class="{cantjoin: userCantJoin}" @click="navToEvent()" @click.middle="navToEvent(true)">
         <CalDate :month="ev.month" :day="ev.day"></CalDate>
         <div>
-            <div class="weekday">{{ ev.weekday }}</div>
+            <div class="weekday flex" v-if="limitsAvailable && isAdmin">
+                {{ ev.weekday }}
+                <div class="tag">{{ ev.eventLimits.available }} of {{ ev.eventLimits.max }} available</div>
+            </div>
+            <div class="weekday" v-else>{{ ev.weekday }}</div>
             <div class="title">{{ ev.title }}</div>
             <div class="time">{{ ev.time }}</div>
         </div>
@@ -70,10 +83,23 @@ export default {
     -webkit-tap-highlight-color: transparent;
 }
 
+.event.cantjoin {
+    background-color: var(--dark-grey);
+}
+
 .caldate {
     border-color: white;
     margin-top: 0px;
     transform: scale(0.7);
+}
+
+.tag {
+    background-color: white;
+    color: var(--vibrant-blue);
+    border-radius: 10px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 
@@ -88,6 +114,13 @@ export default {
 
 .weekday {
     font-size: 14px;
+}
+
+.weekday.flex{
+    display: flex;
+    gap: 5px;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 .buuttons {

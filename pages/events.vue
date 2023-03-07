@@ -11,9 +11,11 @@ export default {
         })
         const alertStore = useAlertStore()
         const loader = useLoaderStore()
+        const auth = useAuthStore()
         return {
             alertStore: alertStore,
-            loader: loader
+            loader: loader,
+            auth: auth,
         }
     },
     data() {
@@ -54,7 +56,10 @@ export default {
     methods: {
         async getEventData() {
             const res = await $fetch(this.$config.public.api + '/events', {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    authorization: this.auth.token
+                }
             })
             if (res.success) {
                 this.u = Object.assign({}, res.upcoming)
