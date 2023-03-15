@@ -86,6 +86,7 @@ export default {
     methods: {
         async scanned(scannedText) {
             // this.scanner.pause()
+            this.clearScan()
             const res = await $fetch(this.$config.public.api + '/scan/qr/' + scannedText, {
                 method: 'GET',
                 headers: {

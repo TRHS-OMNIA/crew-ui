@@ -42,7 +42,7 @@ export default {
             if (! this.isAdmin) {
                 return this.limitsAvailable && ! this.ev.userEventLimits.user_available
             }
-            return this.limitsAvailable && this.ev.eventLimits.available == 0
+            return this.limitsAvailable && this.ev.eventLimits.available <= 0
         }
     },
 }
